@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <style>
+    body {
+      background: url('img2.png') no-repeat center center/cover;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      width: 320px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .container h2 {
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 25px;
+      border: 1px solid #fff;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .container input::placeholder {
+      color: #eee;
+    }
+
+    .container button {
+      width: 100%;
+      padding: 12px;
+      background: purple;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .container p {
+      margin-top: 15px;
+      color: #fff;
+    }
+
+    .container a {
+      color: #f5f2f6;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <div class="container">
+    <h2>Login</h2>
+
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="Email" required>
+      <input id="password" type="password" placeholder="Password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
+
+    <p id="errorMsg" style="color: red;"></p>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+
+      errorMsg.textContent = '';
+
+      if (!email || !password) {
+        errorMsg.textContent = 'Please fill in all fields.';
+        return;
+      }
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+          // ✅ Success → go to home.html
+          window.location.href = "home.html";
+        } else {
+          errorMsg.textContent = result;
+        }
+      } catch (error) {
+        errorMsg.textContent = 'Error: ' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>

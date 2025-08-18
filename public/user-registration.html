@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Registration | N.vnsu Events</title>
+  <style>
+    body {
+      background: url('z.jpeg') no-repeat center center/cover;
+      font-family: Arial, sans-serif;
+    }
+
+    .registration-container {
+      max-width: 600px;
+      background: #fff;
+      margin: 80px auto;
+      padding: 40px 60px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(92, 45, 145, 0.2);
+    }
+
+    .registration-container h1 {
+      text-align: center;
+      color: #5c2d91;
+      margin-bottom: 30px;
+      font-size: 32px;
+    }
+
+    .registration-container form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .registration-container label {
+      margin-bottom: 8px;
+      color: #5c2d91;
+      font-weight: bold;
+    }
+
+    .registration-container input,
+    .registration-container select {
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 2px solid #5c2d91;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .registration-container input:focus,
+    .registration-container select:focus {
+      border-color: #7c4dff;
+      box-shadow: 0 0 5px rgba(92, 45, 145, 0.3);
+    }
+
+    .registration-container button {
+      background: #5c2d91;
+      color: #fff;
+      border: none;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .registration-container button:hover {
+      background: #7c4dff;
+    }
+
+    .confirmation-card {
+      max-width: 600px;
+      background: #fff;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(92, 45, 145, 0.2);
+    }
+
+    .confirmation-card h3 {
+      text-align: center;
+      color: #5c2d91;
+      margin-bottom: 20px;
+    }
+
+    .confirmation-card p {
+      margin: 5px 0;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="registration-container">
+    <h1>User Registration</h1>
+    <form id="registrationForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+
+      <label for="address">Address</label>
+      <input type="text" id="address" required>
+
+      <label for="idproof">ID Proof</label>
+      <input type="text" id="idproof" required>
+
+      <label for="event">Event</label>
+      <input type="text" id="event" readonly>
+
+      <label for="date">Date</label>
+      <input type="date" id="date" required>
+
+      <label for="time">Time Slot</label>
+      <select id="time" required>
+        <option value="">-- Select Time Slot --</option>
+        <option value="10:00 AM">10:00 AM</option>
+        <option value="11:00 AM">11:00 AM</option>
+        <option value="2:00 PM">2:00 PM</option>
+        <option value="4:00 PM">4:00 PM</option>
+      </select>
+
+      <button type="submit">Register</button>
+    </form>
+    <p id="errorMsg" style="color: rgb(245, 76, 4);"></p>
+  </div>
+
+  <div id="confirmationCard"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const eventName = params.get('event') || 'Not Selected';
+    document.getElementById('event').value = eventName;
+
+    const eventSchedules = {
+      "Workshop": { date: "2025-07-28", time: "10:00 AM" },
+      "Technical Fest": { date: "2025-07-30", time: "11:00 AM" },
+      "Hackathon": { date: "2025-08-05", time: "09:00 AM" },
+      "Conference": { date: "2025-08-10", time: "02:00 PM" },
+      "Seminars": { date: "2025-08-12", time: "03:00 PM" },
+      "Not Selected": { date: "", time: "" }
+    };
+    const schedule = eventSchedules[eventName] || eventSchedules["Not Selected"];
+    if (schedule.date) document.getElementById('date').value = schedule.date;
+    if (schedule.time) document.getElementById('time').value = schedule.time;
+
+    const form = document.getElementById('registrationForm');
+    const confirmationCard = document.getElementById('confirmationCard');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const idproof = document.getElementById('idproof').value.trim();
+      const event = document.getElementById('event').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+
+      if (!name || !email || !address || !idproof || !date || !time) {
+        alert("Please fill in all the fields.");
+        return;
+      }
+
+      if (!/^[A-Za-z ]+$/.test(name)) {
+        alert("Name should contain only alphabets.");
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert("Invalid email format.");
+        return;
+      }
+
+      if (!/^[A-Za-z ]+$/.test(address)) {
+        alert("Address should contain only alphabets.");
+        return;
+      }
+
+      if (!/^\d{6}$/.test(idproof)) {
+        alert("ID Proof should contain exactly 6 numeric digits.");
+        return;
+      }
+
+      const registration = { name, email, address, idproof, event, date, time };
+
+      fetch('/registrations')
+        .then(res => res.json())
+        .then(data => {
+          const emailExists = data.some(user => user.email === email && user.event === event);
+          const idExists = data.some(user => user.idproof === idproof && user.event === event);
+          const exactMatch = data.some(user =>
+            user.name === name &&
+            user.email === email &&
+            user.address === address &&
+            user.idproof === idproof &&
+            user.event === event &&
+            user.date === date &&
+            user.time === time
+          );
+
+          if (exactMatch) {
+            alert("You have already registered with the same details.");
+            return;
+          }
+
+          if (emailExists) {
+            alert("This email is already registered for this event.");
+            return;
+          }
+
+          if (idExists) {
+            alert("This ID Proof is already registered for this event.");
+            return;
+          }
+
+          return fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(registration)
+          });
+        })
+        .then(response => {
+          if (!response) return;
+          return response.json();
+        })
+        .then(data => {
+          if (!data) return;
+
+          form.style.display = 'none';
+          confirmationCard.innerHTML = `
+            <div class="confirmation-card">
+              <h3>Registration Successful!</h3>
+              <p><strong>Name:</strong> ${registration.name}</p>
+              <p><strong>Email:</strong> ${registration.email}</p>
+              <p><strong>Address:</strong> ${registration.address}</p>
+              <p><strong>ID Proof:</strong> ${registration.idproof}</p>
+              <p><strong>Event:</strong> ${registration.event}</p>
+              <p><strong>Date:</strong> ${registration.date}</p>
+              <p><strong>Time:</strong> ${registration.time}</p>
+              <p>You will be redirected to Home Page shortly...</p>
+            </div>
+          `;
+
+          setTimeout(() => {
+            window.location.href = 'home.html';
+          }, 3000);
+        })
+        .catch(error => {
+          alert('Error during registration: ' + error.message);
+        });
+    });
+    fetch('/api/registrations', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+})
+.then(res => res.json())
+.then(data => {
+  alert('Registered successfully');
+  this.reset();
+  window.location.href = 'attendee-management.html'; // 👈 redirect here
+})
+.catch(err => alert('Failed to register: ' + err));
+
+  </script>
+
+</body>
+</html>

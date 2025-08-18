@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Event Management</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #007bff;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a, .dropdown-btn {
+      padding: 15px 20px;
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover, .dropdown-btn:hover {
+      background: #0056b3;
+    }
+
+    /* Dropdown content */
+    .dropdown-container {
+      display: none;
+      flex-direction: column;
+      background: #0062cc;
+    }
+
+    .dropdown-container a {
+      padding-left: 40px;
+      background: #0062cc;
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      background: #f4f4f4;
+      overflow-y: auto;
+    }
+
+    .main-content h1 {
+      margin-top: 0;
+    }
+
+    .section {
+      background: #fff;
+      padding: 30px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .register-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #28a745;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .register-btn:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>Event Management</h2>
+
+    <!-- Dropdown for Event Types -->
+    <div class="dropdown">
+      <div class="dropdown-btn" onclick="toggleDropdown()">Event Types</div>
+      <div class="dropdown-container">
+        <a href="#" onclick="showContent('Workshop')">Workshop</a>
+        <a href="#" onclick="showContent('Seminar')">Seminar</a>
+        <a href="#" onclick="showContent('Hackathon')">Hackathon</a>
+        <a href="#" onclick="showContent('Conferences')">Conferences</a>
+        <a href="#" onclick="showContent('Technical Fest')">Technical Fest</a>
+      </div>
+    </div>
+
+    <a href="home.html">Back to Dashboard</a>
+  </div>
+
+  <div class="main-content" id="main-content">
+    <h1>Welcome to Event Management</h1>
+    <p>Select an event type from the sidebar to view its summary and register.</p>
+  </div>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.querySelector(".dropdown-container");
+      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    }
+
+    function showContent(type) {
+      const content = {
+        'Workshop': `
+          <div class="section">
+            <h2>Workshop</h2>
+            <p>This workshop provides practical, hands-on training to develop specific skills required in the industry. It is suitable for students and professionals who want to upgrade their knowledge through interactive sessions.</p>
+            <a href="user-registration.html?event=Workshop" class="register-btn">Register for Workshop</a>
+          </div>`,
+        'Seminar': `
+          <div class="section">
+            <h2>Seminar</h2>
+            <p>Join our seminar to gain valuable insights from industry experts and academic leaders. This event is designed to share knowledge, encourage discussions, and build connections in your field.</p>
+            <a href="user-registration.html?event=Seminar" class="register-btn">Register for Seminar</a>
+          </div>`,
+        'Hackathon': `
+          <div class="section">
+            <h2>Hackathon</h2>
+            <p>Participate in an exciting hackathon where teams compete to solve real-world problems and create innovative solutions. It is a great opportunity to test your coding, teamwork, and problem-solving skills.</p>
+            <a href="user-registration.html?event=Hackathon" class="register-btn">Register for Hackathon</a>
+          </div>`,
+        'Conferences': `
+          <div class="section">
+            <h2>Conferences</h2>
+            <p>Attend our conference to connect with professionals, listen to keynote speakers, and discuss emerging trends in the industry. This event brings together experts and learners for networking and collaboration.</p>
+            <a href="user-registration.html?event=Conferences" class="register-btn">Register for Conference</a>
+          </div>`,
+        'Technical Fest': `
+          <div class="section">
+            <h2>Technical Fest</h2>
+            <p>Be a part of our technical fest that showcases innovative projects, competitions, and interactive sessions. It is an ideal platform for students to present their technical skills and creativity.</p>
+            <a href="user-registration.html?event=Technical%20Fest" class="register-btn">Register for Technical Fest</a>
+          </div>`
+      };
+
+      const main = document.getElementById("main-content");
+      main.innerHTML = `<h1>${type} Summary</h1>` + content[type];
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9fb;
+  color: #1c1c1c;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 80px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 35px;
+  font-weight: bold;
+  color: #3c207c;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #1c1c1c;
+  font-weight: 500;
+}
+
+nav .demo-btn {
+  border: 2px solid #3c207c;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+nav .signup-btn {
+  background: #3c207c;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 60px;
+}
+
+.hero-text {
+  max-width: 600px;
+}
+
+.trusted {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.trusted img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: -10px;
+  border: 2px solid #fff;
+}
+
+.trusted span {
+  margin-left: 20px;
+  color: #555;
+  font-size: 14px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin: 20px 0;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #555;
+}
+
+.hero-image img {
+  max-width: 400px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.trusted-logos-exact {
+  background: #f3f1fc;
+  padding: 40px 0;
+  overflow: hidden;
+}
+
+.logo-slider {
+  height: 80px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slide-track {
+  display: flex;
+  width: calc(220px * 14); /* 7 unique + 7 duplicate */
+  animation: scroll 30s linear infinite;
+}
+
+.slide {
+  height: 80px;
+  width: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide img {
+  max-height: 50px;
+  max-width: 180px;
+  filter: brightness(0) saturate(100%) invert(15%) sepia(20%) saturate(1000%) hue-rotate(210deg);
+  opacity: 0.9;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.start-btn {
+  background: #3c207c;
+  color: #fff;
+  border: none;
+  padding: 20px 40px;
+  font-size: 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.start-btn:hover {
+  background: #3c207c;;
+}
+

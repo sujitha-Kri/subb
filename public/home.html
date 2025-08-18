@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home | Nvnsu Event Portal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fff;
+      color: #333;
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 80px;
+      background: rgba(252, 252, 252, 0.995);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 28px;
+      color: #3c207c;
+    }
+
+    nav {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    nav a {
+      color: #3c207c;
+      margin-left: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: #5c2d91;
+      transition: width 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: #fff;
+      min-width: 180px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: #5c2d91;
+      padding: 12px 16px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background: #5c2d91;
+      color: #fff;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
+      height: 100vh;
+      background: url('a.jpeg') no-repeat center center / cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .hero-content {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 60px;
+      border-radius: 30px;
+      max-width: 800px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 30px rgba(92, 45, 145, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-content h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #f5f4f6;
+    }
+
+    .hero-content h1 span {
+      color: #f7f5f8;
+    }
+
+    .info-section {
+      display: none;
+      height: 100vh;
+      background: linear-gradient(135deg, rgba(92, 45, 145, 0.7), rgba(139, 92, 246, 0.7));
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .info-section .section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 50px;
+      max-width: 800px;
+      box-shadow: 0 0 30px rgba(92, 45, 145, 0.3);
+      text-align: center;
+    }
+
+    .info-section .section h2 {
+      font-size: 40px;
+      color: #5c2d91;
+      margin-bottom: 20px;
+    }
+
+    .info-section .section p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    #contact-us a {
+      color: #5c2d91;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #contact-us a:hover {
+      text-decoration: underline;
+    }
+
+    nav button#logoutBtn {
+      background: #5c2d91;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-left: 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    nav button#logoutBtn:hover {
+      background: #7c4dff;
+    }
+
+    #chatbot {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 320px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      z-index: 9999;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    #chatHeader {
+      background: linear-gradient(135deg, #5c2d91, #7c4dff);
+      color: #fff;
+      padding: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    #chatBody {
+      max-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      transition: max-height 0.4s ease;
+      border: 1px solid #5c2d91;
+      border-top: none;
+    }
+
+    #chatBody.open {
+      max-height: 400px;
+    }
+
+    #messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      font-size: 14px;
+      color: #333;
+    }
+
+    #inputArea {
+      display: flex;
+      border-top: 1px solid #eee;
+    }
+
+    #sendBtn,
+    #clearBtn {
+      border: none;
+      background: linear-gradient(135deg, #5c2d91, #7c4dff);
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0 15px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    #sendBtn:hover,
+    #clearBtn:hover {
+      background: linear-gradient(135deg, #7c4dff, #5c2d91);
+      transform: scale(1.05);
+    }
+
+    #userInput {
+      border: none;
+      border-top: 1px solid #eee;
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">✔ Nvnsu</div>
+    <nav>
+      <a href="#" id="aboutLink">About Us</a>
+      <div class="dropdown">
+        <a href="#">Event Management</a>
+        <div class="dropdown-content">
+          <a href="workshop.html">Workshop</a>
+          <a href="technicalfest.html">Technical Fest</a>
+          <a href="hackathon.html">Hackathon</a>
+          <a href="conference.html">Conference</a>
+          <a href="seminars.html">Seminars</a>
+          
+        </div>
+      </div>
+      <a href="events.html"> Events</a>
+      <a href="registeredevents.html"> Registered Events</a>
+      <a href="#" id="contactLink">Contact Us</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
+
+  <section class="hero" id="heroSection">
+    <div class="hero-content">
+      <h1>JOIN OUR<br><span>INNOVATION</span><br>SUMMIT 2025</h1>
+    </div>
+  </section>
+
+  <section id="aboutSection" class="info-section">
+    <div class="section" id="about-us">
+      <h2>About Us</h2>
+      <p>Welcome to N.vnsu Events, a modern online event management platform designed to make organizing and attending events easier than ever. We help colleges, students, and communities connect through well-planned workshops, hackathons, conferences, seminars, and technical fests — all managed from a single, user-friendly portal.</p>
+      <p>Our mission is to remove manual work and bring everything online: from user registration and secure login to booking slots, tracking attendees, and managing event data. With features like automated registration IDs, attendee dashboards, and integrated chat support, we ensure that your events run smoothly and efficiently.
+      <p>Our goal is to create a vibrant community where knowledge and ideas are exchanged freely. Whether you want to learn a new skill, compete with peers, or expand your professional network, N.vnsu Events offers an engaging platform to help you grow and connect with like-minded people. Join our events and be part of something exciting!
+
+</p>
+</p>
+    </div>
+  </section>
+
+  <section id="contactSection" class="info-section">
+    <div class="section" id="contact-us">
+      <h2>Contact Us</h2>
+      <p>Have questions or need support? We’re here to help you make your events successful.</p>
+      <p>📧 Email: <a href="mailto:support@n.vnsu.com">support@n.vnsu.com</a></p>
+      <p>☎️ Phone: +91-123-456-7890</p>
+      <p>📍 Address: 123 Event Street, Tech City, India</p>
+    </div>
+  </section>
+
+  <div id="chatbot">
+    <div id="chatHeader">💬 Chat with us</div>
+    <div id="chatBody">
+      <div id="messages"></div>
+      <div id="inputArea">
+        <input type="text" id="userInput" placeholder="Ask me anything...">
+<button id="sendBtn">send</button>
+        <button id="clearBtn">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const aboutLink = document.getElementById('aboutLink');
+    const contactLink = document.getElementById('contactLink');
+    const heroSection = document.getElementById('heroSection');
+    const aboutSection = document.getElementById('aboutSection');
+    const contactSection = document.getElementById('contactSection');
+  function respond(input) {
+    let response = "Sorry, I don't understand. Please ask about our events, contact, or about us.";
+
+    
+
+    addMessage(`Bot: ${response}`);
+    }
+
+    aboutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      heroSection.style.display = 'none';
+      contactSection.style.display = 'none';
+      aboutSection.style.display = 'flex';
+    });
+
+    contactLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      heroSection.style.display = 'none';
+      aboutSection.style.display = 'none';
+      contactSection.style.display = 'flex';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+
+    const chatHeader = document.getElementById('chatHeader');
+    const chatBody = document.getElementById('chatBody');
+    const messages = document.getElementById('messages');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    chatHeader.addEventListener('click', () => {
+      chatBody.classList.toggle('open');
+    });
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      messages.innerHTML = '';
+    });
+
+    function sendMessage() {
+      const userMsg = userInput.value.trim();
+      if (!userMsg) return;
+
+      addMessage(`You: ${userMsg}`);
+      respond(userMsg.toLowerCase());
+      userInput.value = '';
+    }
+
+    function addMessage(msg) {
+      const div = document.createElement('div');
+      div.textContent = msg;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function respond(input) {
+      let response = "Sorry, I don't understand.";
+
+      if (input.includes('about')) {
+      response = "We are N.vnsu, an event platform for workshops, hackathons, fests, and more.";
+    } else if (input.includes('contact')) {
+      response = "Contact us at support@n.vnsu.com or +91-123-456-7890.";
+    } else if (input.includes('workshop')) {
+      response = "The Workshop is on 28/07/2025 at 10:00 AM.";
+    } else if (input.includes('hackathon')) {
+      response = "The Hackathon is on 05/08/2025 at 09:00 AM.";
+    } else if (input.includes('technical fest')) {
+      response = "The Technical Fest is on 30/07/2025 at 11:00 AM.";
+    } else if (input.includes('conference')) {
+      response = "The Conference is on 10/08/2025 at 02:00 PM.";
+    } else if (input.includes('seminar')) {
+      response = "The Seminar is on 12/08/2025 at 03:00 PM.";
+    } else if (input.includes('register')) {
+      response = "To register, go to Event Management and select your event.";
+    } else if (input.includes('attendance')) {
+      response = "Attendance is marked automatically when you check in at the event.";
+    } else if (input.includes('fee')) {
+      response = "Some events may have a small fee. Check the event page.";
+    }
+
+      addMessage(`Bot: ${response}`);
+    }
+  </script>
+
+</body>
+</html>
