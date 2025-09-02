@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subb-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: subb-app
+  template:
+    metadata:
+      labels:
+        app: subb-app
+    spec:
+      containers:
+      - name: subb-app
+        image: sujitha939/subb-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MONGO_URI
+          value: "mongodb://mongodb-service:27017/eventdb"
+        - name: PORT
+          value: "3000"
+        - name: NODE_ENV
+          value: "production"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: subb-service
+spec:
+  selector:
+    app: subb-app
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: LoadBalancer

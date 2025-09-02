@@ -10,13 +10,12 @@ const app = express();
 const PORT = 3000;
 
 // ✅ MongoDB connection
-mongoose.connect('mongodb://localhost:27017/eventdb', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ MongoDB connected'))
-.catch(err => console.log('❌ MongoDB connection error:', err));
+const MONGO_URI = process.env.MONGO_URI || "mongodb://mongo:27017/eventdb";
 
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.log("❌ MongoDB connection error:", err));
+  
 // ✅ Middleware
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

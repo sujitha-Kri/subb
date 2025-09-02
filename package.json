@@ -16,5 +16,13 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sujitha-Kri/Capsule_project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sujitha-Kri/Capsule_project/issues"
+  },
+  "homepage": "https://github.com/sujitha-Kri/Capsule_project#readme",
   "description": ""
 }
