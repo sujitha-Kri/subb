@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "sujitha939/subb-app"
         DOCKER_TAG   = "${BUILD_NUMBER}"
-        EKS_CLUSTER_NAME = "sujitha-cluster"
+        EKS_CLUSTER_NAME = "sujitha-test-cluster"
         AWS_REGION = "us-east-1"
     }
     stages {
